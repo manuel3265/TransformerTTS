@@ -3,7 +3,7 @@ import unittest
 import tensorflow as tf
 import numpy as np
 
-from preprocessing.text.tokenizer import Tokenizer
+from preprocessing.data_handling import Tokenizer
 
 
 class TestCharTokenizer(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestCharTokenizer(unittest.TestCase):
         self.assertEqual(6, tokenizer.end_token_index)
         self.assertEqual(7, tokenizer.vocab_size)
         
-        seq = tokenizer('a b d')
+        seq = tokenizer.encode('a b d')
         self.assertEqual([5, 1, 3, 2, 3, 6], seq)
         
         seq = np.array([5, 1, 3, 2, 8, 6])

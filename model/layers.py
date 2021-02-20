@@ -34,16 +34,16 @@ class CNNResNorm(tf.keras.layers.Layer):
     def call_convs(self, x, training):
         for i in range(0, len(self.convolutions)):
             x = self.convolutions[i](x)
-            x = self.inner_activations[i](x)
             x = self.normalization[i](x, training=training)
+            x = self.inner_activations[i](x)
         return x
     
     def call(self, inputs, training):
         x = self.call_convs(inputs, training=training)
         x = self.last_conv(x)
-        x = self.last_activation(x)
         x = self.normalization[-2](x, training=training)
-        return self.normalization[-1](inputs + x, training=training)
+        x = self.last_activation(x)
+        return self.normalization[-1](inputs + x)
 
 
 class FFNResNorm(tf.keras.layers.Layer):
@@ -115,7 +115,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self.dense = tf.keras.layers.Dense(model_dim)
     
     def split_heads(self, x, batch_size: int):
-        """ Split the last dimension into (num_heads, depth).
+        """Split the last dimension into (num_heads, depth).
         Transpose the result such that the shape is (batch_size, num_heads, seq_len, depth)
         """
         

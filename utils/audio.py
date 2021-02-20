@@ -1,15 +1,13 @@
 import sys
 
-import librosa
 import numpy as np
-import librosa.display
-from matplotlib import pyplot as plt
-import soundfile as sf
+import librosa
+
 
 class Audio():
     def __init__(self, config: dict):
         self.config = config
-        self.normalizer = getattr(sys.modules[__name__], config['normalizer'])()
+        self.normalizer = getattr(sys.modules[__name__], config['normalizer'])(config)
     
     def _normalize(self, S):
         return self.normalizer.normalize(S)
@@ -37,11 +35,11 @@ class Audio():
         """ This is what the model is trained to reproduce. """
         D = self._stft(wav)
         S = self._linear_to_mel(np.abs(D))
-        return self._normalize(S).T
+        return self._normalize(S)
     
     def reconstruct_waveform(self, mel, n_iter=32):
-        """ Uses Griffin-Lim phase reconstruction to convert from a normalized
-        mel spectrogram back into a waveform. """
+        """Uses Griffin-Lim phase reconstruction to convert from a normalized
+        mel spectrogram back into a waveform."""
         amp_mel = self._denormalize(mel)
         S = librosa.feature.inverse.mel_to_stft(
             amp_mel,
@@ -56,41 +54,22 @@ class Audio():
             hop_length=self.config['hop_length'],
             win_length=self.config['win_length'])
         return wav
-    
-    def display_mel(self, mel, is_normal=True):
-        if is_normal:
-            mel = self._denormalize(mel)
-        f = plt.figure(figsize=(10, 4))
-        s_db = librosa.power_to_db(mel, ref=np.max)
-        ax = librosa.display.specshow(s_db,
-                                      x_axis='time',
-                                      y_axis='mel',
-                                      sr=self.config['sampling_rate'],
-                                      fmin=self.config['f_min'],
-                                      fmax=self.config['f_max'])
-        print(ax, type(ax), 'print(ax, type(ax))print(ax, type(ax))print(ax, type(ax))print(ax, type(ax))print(ax, type(ax))print(ax, type(ax))print(ax, type(ax))')
-        f.add_subplot(ax)
-        return f
-    
-    def load_wav(self, wav_path):
-        y, sr = librosa.load(wav_path, sr=self.config['sampling_rate'])
-        return y, sr
-    
-    def save_wav(self, y, wav_path):
-        sf.write(wav_path, data=y, samplerate=self.config['sampling_rate'])
 
 
 class Normalizer:
-    def normalize(self, S):
+    def __init__(self, config: dict):
+        self.config = config
+    
+    def normalize(self):
         raise NotImplementedError
     
-    def denormalize(self, S):
+    def denormalize(self):
         raise NotImplementedError
 
 
 class MelGAN(Normalizer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config):
+        super().__init__(config)
         self.clip_min = 1.0e-5
     
     def normalize(self, S):
@@ -102,8 +81,8 @@ class MelGAN(Normalizer):
 
 
 class WaveRNN(Normalizer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: dict):
+        super().__init__(config)
         self.min_level_db = - 100
         self.max_norm = 4
     
