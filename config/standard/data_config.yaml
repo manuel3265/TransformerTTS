@@ -1,6 +1,6 @@
 # PATHS: change accordingly
-data_directory: '/path/to/dataset' # path to wavs and metafile directory
-log_directory: '/path/to/logdir'   # weights and logs are stored here
+data_directory: '/home/manuel_servex/audios/vanessa/' # path to wavs and metafile directory
+log_directory: '/home/manuel_servex/train_20_02_2021/'   # weights and logs are stored here
 train_data_directory: None         # optional: alternative directory where to store processed data (default is data_dir)
 wav_subdir_name: 'wavs'            # subfolder in data_directory containing wavs files
 metadata_filename: 'metadata.csv'  # name of metadata file under data_directory
@@ -22,4 +22,4 @@ f_min: 40
 f_max: None
 normalizer: WaveRNN                 # which mel normalization to use from utils.audio.py
 # TOKENIZER
-phoneme_language: 'en'
+phoneme_language: 'es-la'
