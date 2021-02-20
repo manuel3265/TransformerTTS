@@ -19,7 +19,7 @@ mel_channels: 80
 hop_length: 275
 win_length: 1100
 f_min: 40
-f_max: None
+f_max: null
 normalizer: WaveRNN                 # which mel normalization to use from utils.audio.py
 # TOKENIZER
 phoneme_language: 'es-la'
