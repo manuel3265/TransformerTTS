@@ -33,7 +33,7 @@ reduction_factor_schedule:
 - [0, 10]
 - [80_000, 1]
 max_steps: 400_000
-batch_size: 16
+batch_size: 64
 debug: false
 
 # LOGGING
