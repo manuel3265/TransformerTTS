@@ -359,6 +359,7 @@ class CrossAttentionBlocks(tf.keras.layers.Layer):
     def call(self, inputs, enc_output, training, decoder_padding_mask, encoder_padding_mask, drop_n_heads,
              reduction_factor=1):
         seq_len = tf.shape(inputs)[1]
+        print(seq_len, reduction_factor, inputs, 'inputsinputsinputsinputsinputsinputsinputsinputsinputsinputsinputsinputsinputsinputsinputs')
         x = inputs * tf.math.sqrt(tf.cast(self.model_dim, tf.float32))
         x += self.pos_encoding_scalar * self.pos_encoding[:, :seq_len * reduction_factor:reduction_factor, :]
         x = self.dropout(x, training=training)
