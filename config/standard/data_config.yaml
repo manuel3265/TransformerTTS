@@ -1,6 +1,6 @@
 # PATHS: change accordingly
 data_directory: '/home/manuel_servex/audios/vanessa/' # path to wavs and metafile directory
-log_directory: '/home/manuel_servex/train_20_02_2021/'   # weights and logs are stored here
+log_directory: '/home/manuel_servex/train_24_02_2021/'   # weights and logs are stored here
 train_data_directory: 'transformer_tts_data'         # optional: alternative directory where to store processed data (default is data_dir)
 wav_subdir_name: 'wavs'            # subfolder in data_directory containing wavs files
 metadata_filename: 'metadata.csv'  # name of metadata file under data_directory
